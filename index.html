@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10111b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Vaibhav Studio">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Vaibhav AI Video Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#0d0e16;--panel:#171925;--muted:#a8adbf;--accent:#9a7cff;--line:#2b2e40}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#242044 0,#0d0e16 45%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f7fb;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom)}
+main{max-width:680px;margin:auto;padding:22px 0 40px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#a78bfa,#5b43bd);display:grid;place-items:center;font-size:24px}
+h1{font-size:23px;margin:0} .sub{color:var(--muted);font-size:13px;margin-top:4px}
+.tag{display:inline-block;margin-top:18px;border:1px solid #4a416c;color:#d5caff;background:#211c35;padding:7px 11px;border-radius:30px;font-size:12px}
+.card{background:rgba(23,25,37,.96);border:1px solid var(--line);border-radius:20px;padding:17px;margin-top:16px;box-shadow:0 12px 32px #0003}
+h2{font-size:16px;margin:0 0 14px}label{display:block;color:#d9dbea;font-size:13px;margin:13px 0 7px}
+textarea,input,select{width:100%;background:#0e101a;color:#fff;border:1px solid #35394d;border-radius:12px;padding:13px;font:inherit;font-size:15px;outline:none}
+textarea{min-height:108px;resize:vertical}select{appearance:auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{border:0;border-radius:13px;padding:13px 15px;font-weight:700;font-size:14px;cursor:pointer}
+.primary{width:100%;margin-top:16px;color:#fff;background:linear-gradient(100deg,#8d72f5,#5b8cf5)}
+.secondary{background:#292d40;color:#f2f1ff}
+.row{display:flex;gap:9px;margin-top:10px}.row button{flex:1}
+.note{font-size:12px;line-height:1.5;color:var(--muted);margin-top:12px}
+.output{white-space:pre-wrap;background:#0e101a;border:1px solid #34384b;padding:13px;border-radius:12px;font-size:13px;line-height:1.55;min-height:60px}
+.status{font-size:12px;color:#c9baff;margin-top:10px}
+footer{color:#7f8498;text-align:center;font-size:11px;margin:22px 0}
+@media(max-width:380px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <header class="brand">
+    <div class="logo">🎬</div>
+    <div><h1>Vaibhav AI Video Studio</h1><div class="sub">Your prompt-to-video workspace</div></div>
+  </header>
+  <div class="tag">REALISTIC • 3D CARTOON • HINDI VOICE</div>
+
+  <section class="card">
+    <h2>✨ Create a video idea</h2>
+    <label for="style">Video style</label>
+    <select id="style"><option>Realistic cinematic</option><option>3D cartoon animation</option><option>Mix of realistic and cartoon</option></select>
+    <label for="prompt">Describe your video</label>
+    <textarea id="prompt" placeholder="Example: A clever honey badger becomes the hero of a funny village adventure..."></textarea>
+    <div class="grid">
+      <div><label for="duration">Duration</label><select id="duration"><option>15 seconds</option><option selected>30 seconds</option><option>60 seconds</option></select></div>
+      <div><label for="language">Dialogue / voice</label><select id="language"><option>Hindi</option><option>Hinglish</option><option>English</option></select></div>
+    </div>
+    <label for="format">Video format</label>
+    <select id="format"><option>Vertical 9:16 (YouTube Shorts / Reels)</option><option>Landscape 16:9</option><option>Square 1:1</option></select>
+    <button class="primary" id="make">Generate video prompt</button>
+    <div class="status" id="status" aria-live="polite">Demo workspace — this first version prepares a production-ready prompt.</div>
+  </section>
+
+  <section class="card">
+    <h2>📝 Your ready-to-use AI video prompt</h2>
+    <div class="output" id="output">Your video prompt will appear here.</div>
+    <div class="row"><button class="secondary" id="copy">Copy prompt</button><button class="secondary" id="share">Share</button></div>
+    <p class="note">This starter app creates and formats your prompt. It does not render video yet. Actual video generation needs a video-generation service; free services may have queues, watermarks, or usage limits.</p>
+  </section>
+
+  <section class="card">
+    <h2>🎞️ Generation workflow</h2>
+    <p class="note">1. Describe your story above.<br>2. Copy the generated prompt.<br>3. Paste it into a video-generation service that supports text-to-video.<br>4. Download the result and edit or add voice/music in a video editor.</p>
+  </section>
+  <footer>Vaibhav AI Video Studio • Starter version</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+function buildPrompt(){
+ const idea=$('prompt').value.trim();
+ if(!idea){$('status').textContent='Please describe your video first.';$('prompt').focus();return;}
+ const style=$('style').value, duration=$('duration').value, language=$('language').value, format=$('format').value;
+ const text=`Create a ${duration} ${style.toLowerCase()} video.\n\nSTORY:\n${idea}\n\nVISUAL DIRECTION:\nConsistent characters and clothing across every scene. Clear action, expressive faces, cinematic composition, smooth natural motion, detailed environment, coherent lighting, polished professional quality. Avoid distorted faces, extra limbs, flicker, random text, logos, and watermarks.\n\nAUDIO:\nUse natural ${language} dialogue with distinct character voices, clear pronunciation, suitable emotion, subtle background ambience, and balanced sound. Do not imitate any real person's voice.\n\nFORMAT:\n${format}. Keep important characters and action inside the safe frame.\n\nSTRUCTURE:\nOpen with an attention-grabbing moment, build the story clearly, and finish with a satisfying ending.`;
+ $('output').textContent=text;
+ $('status').textContent='Prompt ready. Copy it into a compatible video-generation service.';
+}
+$('make').addEventListener('click',buildPrompt);
+$('copy').addEventListener('click',async()=>{const t=$('output').textContent;if(t==='Your video prompt will appear here.')return;try{await navigator.clipboard.writeText(t);$('status').textContent='Prompt copied.';}catch(e){$('status').textContent='Select and copy the prompt manually.';}});
+$('share').addEventListener('click',async()=>{const t=$('output').textContent;if(navigator.share){try{await navigator.share({title:'My AI video prompt',text:t});}catch(e){}}else{$('status').textContent='Use Copy prompt, then share it from another app.';}});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
+</script>
+</body></html>

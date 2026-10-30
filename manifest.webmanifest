@@ -1,0 +1,9 @@
+{
+  "name": "Vaibhav AI Video Studio",
+  "short_name": "Vaibhav Studio",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0d0e16",
+  "theme_color": "#10111b",
+  "icons": []
+}
